@@ -1,0 +1,7 @@
+#timeline{
+  width: 200vw;
+  height: 100vh;
+  margin: 0;
+  background-image: url(".\\timeline.png");
+  background-size: contain;
+}
