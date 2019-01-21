@@ -9,7 +9,7 @@ context.canvas.height = 1000;
 context.canvas.width = 1000;
 
 
-
+/*
 //Game Object initialization
 var user, enviroment;
 //Controll intialization
@@ -227,3 +227,4 @@ function arrow(){
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
 init();
+*/
