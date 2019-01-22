@@ -9,10 +9,10 @@ class Entity{
 		this.w = w;
 		this.h = h;
 	}
-	draw(context, cx, cw, ch){
-		var ax = (cw * this.x / 100) - cx;
+	draw(context, cx, cw, ch, ha){
+		var ax = (cw * this.x / 180) - cx + ha;
 		var ay = ch - (ch * (this.y + this.h) / 100);
-		var aw = cw * this.w / 100;
+		var aw = cw * this.w / 180;
 		var ah = ch * this.h / 100;
 		context.fillStyle = this.color;
 		context.fillRect(ax, ay, aw, ah);
@@ -29,14 +29,17 @@ class Entity{
 		var inY = ((y > this.y) && (y < this.y + this.h));
 		return (inX && inY);
 	}
-	//Animation test
 	get color(){
+		return "#000000"
+		/*
+		 * random color/animation test
 		var letters = '0123456789ABCDEF';
 		var color = '#';
 		for (var i = 0; i < 6; i++) {
 			color += letters[Math.floor(Math.random() * 16)];
 		}
 		return color;
+		*/
 	}
 }
 class Image extends Entity{
@@ -45,17 +48,59 @@ class Image extends Entity{
 		this.image = i;
 	}
 }
-var checkers = [];
-var i = 0;
-for(var y = 0; y < 100; y += 10){
-	for(var x = 0; x < 100; x += 20){
-		checkers[i] = new Entity(x, y, 10, 10);
-		i ++;
+class User extends Entity{
+	constructor(x, y, w, h){
+		super(x, y, w, h);
+		this.jumping = false;
 	}
-	//y += 10;
-	for(var x = 10; x < 100; x += 20){
-		checkers[i] = new Entity(x, y, 10, 10);
-		i ++;
+	updatePos(){
+		this.x += this.dx;
+	}
+	draw(context, cx, cw, ch, ha){
+		this.updatePos();
+		super.draw(context, cx, cw, ch, ha);
+	}
+	get dx(){
+		if(controller.left && controller.right){
+			return 0;
+		} else if(controller.left){
+			return -1;
+		} else if(controller.right){
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	get dy(){
+		return 0;
 	}
 }
-update(checkers);
+
+controller = {
+	left:false,
+	right:false,
+	up:false,
+
+	keyListener:function(event) {
+	var key_state = (event.type == "keydown")?true:false;
+		switch(event.keyCode) {
+		case 37:// left key
+			controller.left = key_state;
+			break;
+		case 38:// up key
+			controller.up = key_state;
+			break;
+		case 39:// right key
+			controller.right = key_state;
+			break;
+		}
+	}
+};
+
+window.addEventListener("keydown", controller.keyListener)
+window.addEventListener("keyup", controller.keyListener);
+
+var ground = new Entity(0, 0, 180, 1);
+var box = new Entity(30, 60, 40, 20);
+var user = new User(0, 1, 10, 10);
+update([ground, box, user]);
