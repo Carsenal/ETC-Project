@@ -30,7 +30,7 @@ class Entity{
 		return (inX && inY);
 	}
 	get color(){
-		return "#000000"
+		return "#000000";
 		/*
 		 * random color/animation test
 		var letters = '0123456789ABCDEF';
